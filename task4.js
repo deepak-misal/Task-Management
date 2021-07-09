@@ -13,7 +13,9 @@ window.onload = function() {
             total++;
             document.getElementById('lastUpdatedTime').innerHTML = "Last Updated Time : " + getLastUpdatedTime();
             renderElements(myList[index]);
+            return;
         }
+        renderElements(myList[index])
     }
 };
 
@@ -53,13 +55,17 @@ function renderElements(task) {
     li.appendChild(document.createTextNode(task.info));
     ul.prepend(li);
 
+    if (task.isDeleted)
+        li.style.textDecoration = "line-through";
+
     var btnDelete = document.createElement("button");
     btnDelete.textContent = "X";
     btnDelete.addEventListener("click", function() {
         var id = task.id;
-        ul.removeChild(li);
+        //ul.removeChild(li);
         task.isDeleted = true;
-        btnDelete.remove();
+        //btnDelete.remove();
+        li.style.textDecoration = "line-through";
         console.log(myList)
         total--;
         storeToAdmin(task);
@@ -76,8 +82,8 @@ function renderElements(task) {
 function addToList(info) {
     task = {
         id: Date.now(),
-        info: info,
         createdTime: moment().format('MMMM Do YYYY, h:mm:ss a'),
+        info: info + " => " + moment().format('MMMM Do YYYY, h:mm:ss a') + "  ",
         isDeleted: false,
     };
     total++;
@@ -106,5 +112,6 @@ document.getElementById('deleteAll').addEventListener("click", function() {
             // document.getElementById('lastUpdatedTime').innerHTML = "Last Updated Time : "+getLastUpdatedTime();
         }
     }
+    window.location.reload()
 
 })
