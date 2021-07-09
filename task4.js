@@ -66,3 +66,17 @@ function addToList(info) {
     console.log(myList);
 
 }
+var deletAllButton=document.getElementById("deleteAll").addEventListener("click",function(){
+    console.log("hi")
+});
+function deleteAll(){
+    if (!getFromAdmin())
+        return;
+
+    myList = JSON.parse(getFromAdmin())
+    for (let index = 0; index < myList.length; index++) {
+        if (!myList[index].isDeleted)
+            myList[index].isDeleted=true;
+    }
+}
+deleteAll();
