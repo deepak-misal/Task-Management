@@ -1,6 +1,6 @@
 let task = {}
 var myList = []
-
+var total = 0;
 var lastUpdatedTime;
 
 window.onload = function() {
@@ -10,7 +10,8 @@ window.onload = function() {
     myList = JSON.parse(getFromAdmin())
     for (let index = 0; index < myList.length; index++) {
         if (!myList[index].isDeleted) {
-            document.getElementById('lastUpdatedTime').innerHTML = getLastUpdatedTime();
+            total++;
+            document.getElementById('lastUpdatedTime').innerHTML = "Last Updated Time : " + getLastUpdatedTime();
             renderElements(myList[index]);
         }
     }
@@ -60,13 +61,16 @@ function renderElements(task) {
         task.isDeleted = true;
         btnDelete.remove();
         console.log(myList)
+        total--;
         storeToAdmin(task);
         storeLastUpdatedTime();
-        document.getElementById('lastUpdatedTime').innerHTML = getLastUpdatedTime();
+        document.getElementById('lastUpdatedTime').innerHTML = "Last Updated Time : " + getLastUpdatedTime();
+        document.getElementById('total').innerHTML = "Total : " + total;
     });
     li.append(btnDelete);
     storeToAdmin();
-    document.getElementById('lastUpdatedTime').innerHTML = getLastUpdatedTime();
+    document.getElementById('lastUpdatedTime').innerHTML = "Last Updated Time : " + getLastUpdatedTime();
+    document.getElementById('total').innerHTML = "Total : " + total;
 }
 
 function addToList(info) {
@@ -76,15 +80,15 @@ function addToList(info) {
         createdTime: moment().format('MMMM Do YYYY, h:mm:ss a'),
         isDeleted: false,
     };
-
+    total++;
 
     myList.push(task);
     renderElements(task);
     storeToAdmin(myList);
     storeLastUpdatedTime();
-    document.getElementById('lastUpdatedTime').innerHTML = getLastUpdatedTime();
+    document.getElementById('lastUpdatedTime').innerHTML = "Last Updated Time : " + getLastUpdatedTime();
+    document.getElementById('total').innerHTML = "Total : " + total;
     console.log(myList);
-
 }
 
 
@@ -97,9 +101,10 @@ document.getElementById('deleteAll').addEventListener("click", function() {
     for (let index = 0; index < myList.length; index++) {
         if (!myList[index].isDeleted) {
             myList[index].isDeleted = true;
+            storeToAdmin();
             storeLastUpdatedTime();
-            document.getElementById('lastUpdatedTime').innerHTML = getLastUpdatedTime();
-            //renderElements(myList[index]);
+            // document.getElementById('lastUpdatedTime').innerHTML = "Last Updated Time : "+getLastUpdatedTime();
         }
     }
+
 })
